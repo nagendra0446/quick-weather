@@ -2,26 +2,33 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState}from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import * as Location from 'expo-location';
+import FutureForecast from './components/FutureForecast';
 
 import DateTime from './components/DateTime'
 import WeatherScroll from './components/WeatherScroll'
+
+
+import { Button } from 'react-native';
+
 const API_KEY ='06e410354074255cadd2ff3bcb4e2dda';
 const img = require('./assets/image.png')
 export default function App() {
   const [data, setData] = useState({});
   const [addr, setAddr] = useState({});
+
+
+
+
  
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
 
-      if (status !== 'granted') {
-        fetchDataFromApi("40.7128", "-74.0060")
-        return;
-      }
+      
       let location = await Location.getCurrentPositionAsync({});
 
       fetchDataFromApi(location.coords.latitude, location.coords.longitude);
+      console.log(location.coords.latitude, location.coords.longitude);
       fetchAddr(location.coords.latitude, location.coords.longitude);
     
   })();
@@ -39,16 +46,13 @@ export default function App() {
   }
 
   const fetchAddr = (lat, long) => {
-    fetch(`https://trueway-geocoding.p.rapidapi.com/ReverseGeocode?location=${lat}%2C%20${long}&language=en`, {
+      fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${long}&limit=1&appid=06e410354074255cadd2ff3bcb4e2dda`, {
 	"method": "GET",
-	"headers": {
-		"x-rapidapi-host": "trueway-geocoding.p.rapidapi.com",
-		"x-rapidapi-key": "29c2d7eab6msh43713a5dd579724p13ecadjsn044fd101db72"
-	}
+	
 })
 .then((response) => response.json()).then((json) => {
-  console.log(json.results[1].address)
-  setAddr(json.results[1])
+  console.log(json[0].name)
+  setAddr(json[0])
   return data.names;
 }).catch((error) => {
   console.error(error);
@@ -61,9 +65,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <DateTime current={data.current} timezone={data.timezone} lat={data.lat} lon={data.lon} addr={addr.address}/>
+      <ImageBackground source={img} style={styles.image} >
+      <DateTime current={data.current} timezone={data.timezone} lat={data.lat} lon={data.lon} addr={addr.name}/>
       <WeatherScroll weatherData={data.daily}/>
-     
+      <WeatherScroll weatherData={data.daily}/>
+      </ImageBackground>
       {/*<StatusBar style="auto" />*/}
     </View>
   );

@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, Image, StyleSheet} from 'react-native'
+import {View, Text, Image, StyleSheet, TouchableOpacity, Button} from 'react-native'
 import moment from 'moment-timezone'
 const FutureForecast = ({data}) => {
     return (
@@ -27,15 +27,19 @@ const FutureForecast = ({data}) => {
 const FutureForecastItem = ({forecastItem}) => {
     const img = {uri: "http://openweathermap.org/img/wn/"+forecastItem.weather[0].icon+"@2x.png"}
    
-    
+    console.log(forecastItem)
     return (
+        <TouchableOpacity onPress={() => console.log('Clicked')}>
         <View  style={styles.futureForecastItemContainer}>
+        
             <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('ddd')}</Text>
             <Image source={img} style={styles.image} />
+            <Text  style={styles.temp}>{forecastItem.weather[0].main}</Text> 
             <Text  style={styles.temp}>Night - {forecastItem.temp.night}&#176;C</Text>
             <Text  style={styles.temp}>Day - {forecastItem.temp.day}&#176;C</Text>
-
+        
         </View>
+        </TouchableOpacity>
     )
 }
 
@@ -45,27 +49,30 @@ export default FutureForecast
 const styles = StyleSheet.create({
     image: {
         width: 75,
-        height:75
+        height:75,
+        backgroundColor: '#E5890A',
+        borderRadius: 100,
+        marginLeft: 40
     }, 
     futureForecastItemContainer: {
-        flex:1,
-        justifyContent: 'center',
-        backgroundColor: '#18181b99',
-        padding: 30,
+        
+        backgroundColor: '#F3F4ED',
+        height: 150,
+        width: 150,
         marginLeft: 10,
-        borderRadius: 10
+        borderRadius: 2
     }, 
     day: {
-        fontSize: 20,
-        color:"white",
-        padding: 10,
+        padding: 0,
+        fontSize: 12,
+        color:"black",
         textAlign:"center",
-        fontWeight: "200",
+        fontWeight: "600",
     },   
     temp: {
-        fontSize: 14,
-        color:"white",
-        fontWeight:"100",
+        fontSize: 12,
+        color:"black",
+        fontWeight:"600",
         textAlign:"center"
     },
 })
