@@ -69,20 +69,21 @@ const DateTime = ({current, lat, lon, timezone, addr}) => {
 
 const styles = StyleSheet.create({
     container: {
+        margin: 10,
         flexDirection:"row",
         justifyContent:'space-between',
-        padding: 15
+        paddingTop: 10
     },
     heading: {
         
         fontSize: 35,
-        color:'white',
+        //color:'white',
         fontWeight: '300'
     },
     subheading: {
         fontSize: 20,
         
-        color: '#eee',
+        //color: '#eee',
         fontWeight: '300'
     },
     rightAlign: {
@@ -92,19 +93,20 @@ const styles = StyleSheet.create({
     timezone: {
         
         fontSize: 20,
-        color:'white'
+        //color:'white'
     },
     latlong:{
         
         fontSize:12,
-        color:'white',
+        //color:'white',
         fontWeight: '700'
     },
     weatherItemContainer: {
-        backgroundColor: "#18181b99",
+        //backgroundColor: "#18181b99",
         borderRadius: 10,
         padding: 10,
-        marginTop: 10
+        marginTop: 10,
+        borderWidth: 1
     }, 
     weatherItem: {
         flexDirection: 'row',
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     },
     weatherItemTitle: {
         
-        color:'#eee',
+        //color:'#eee',
         fontSize: 14,
         fontWeight: '200'
     }

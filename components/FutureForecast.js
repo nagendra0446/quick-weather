@@ -27,7 +27,7 @@ const FutureForecast = ({data}) => {
 const FutureForecastItem = ({forecastItem}) => {
     const img = {uri: "http://openweathermap.org/img/wn/"+forecastItem.weather[0].icon+"@2x.png"}
    
-    console.log(forecastItem)
+    //console.log(forecastItem)
     return (
         <TouchableOpacity onPress={() => console.log('Clicked')}>
         <View  style={styles.futureForecastItemContainer}>
@@ -48,19 +48,17 @@ export default FutureForecast
 
 const styles = StyleSheet.create({
     image: {
-        width: 75,
-        height:75,
+        width: 100,
+        height:100,
         backgroundColor: '#E5890A',
-        borderRadius: 100,
-        marginLeft: 40
+        borderRadius: 100
     }, 
     futureForecastItemContainer: {
-        
+        flex:1,
+        padding: 20,
         backgroundColor: '#F3F4ED',
-        height: 150,
-        width: 150,
-        marginLeft: 10,
-        borderRadius: 2
+        borderRadius: 2,
+        marginLeft: 10
     }, 
     day: {
         padding: 0,

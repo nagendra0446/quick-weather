@@ -3,6 +3,7 @@ import React, {useEffect, useState}from 'react';
 import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import * as Location from 'expo-location';
 import FutureForecast from './components/FutureForecast';
+import HourlyScroll from './components/HourlyScroll';
 
 import DateTime from './components/DateTime'
 import WeatherScroll from './components/WeatherScroll'
@@ -36,9 +37,10 @@ export default function App() {
 
   const fetchDataFromApi = (latitude, longitude) => {
     if(latitude && longitude) {
-      fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&units=metric&appid=${API_KEY}`).then(res => res.json()).then(data => {
+      fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&units=metric&appid=${API_KEY}`).then(res => res.json()).then(data => {
 
       //console.log(data)
+      console.log(data.hourly[1])
       setData(data)
       })
     }
@@ -53,7 +55,6 @@ export default function App() {
 .then((response) => response.json()).then((json) => {
   console.log(json[0].name)
   setAddr(json[0])
-  return data.names;
 }).catch((error) => {
   console.error(error);
 });
@@ -65,20 +66,20 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={img} style={styles.image} >
+      {/*<ImageBackground source={img} style={styles.image}>*/}
       <DateTime current={data.current} timezone={data.timezone} lat={data.lat} lon={data.lon} addr={addr.name}/>
-      <WeatherScroll weatherData={data.daily}/>
-      <WeatherScroll weatherData={data.daily}/>
-      </ImageBackground>
-      {/*<StatusBar style="auto" />*/}
+      <HourlyScroll weatherData={data.hourly}/>
+      <WeatherScroll weatherData={data.daily} dayNum={1}/>
+      {/*</ImageBackground>*/}
+      <StatusBar style="auto" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#544179'
+    flex: 1
+    //backgroundColor: '#544179'
   },
   image:{
     flex:1, 

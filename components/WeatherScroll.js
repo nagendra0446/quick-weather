@@ -42,14 +42,14 @@ const CurrentTempEl = ({data}) => {
 const styles = StyleSheet.create({
     scrollView: {
         flex:0.1,
-        padding:0
+        paddingLeft: 10
     },
     image: {
         backgroundColor: '#E5890A',
         width: 100,
         height: 100,
-        borderRadius: 100
-
+        borderRadius: 100,
+        marginRight: 8
     },
 
 
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:'center',
         borderRadius: 2,
-        height: 150
+        padding: 10
         
     },
     day: {
