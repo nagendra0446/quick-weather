@@ -12,7 +12,7 @@ import WeatherScroll from './components/WeatherScroll'
 import { Button } from 'react-native';
 
 const API_KEY ='06e410354074255cadd2ff3bcb4e2dda';
-const img = require('./assets/image.png')
+const img = require('./assets/wi-cloud.svg')
 export default function App() {
   const [data, setData] = useState({});
   const [addr, setAddr] = useState({});

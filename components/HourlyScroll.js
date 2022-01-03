@@ -1,8 +1,6 @@
 import React from 'react'
 import {View, ScrollView, Image, Text, StyleSheet} from 'react-native'
 import moment from 'moment-timezone'
-
-
 const HourlyScroll = ({weatherData}, dayNum) => {
     
     //console.log(typeof(weatherData))
@@ -30,17 +28,47 @@ const FutureForecast2 = ({data}) => {
 }
 
 const FutureForecastItem2 = ({forecastItem}) => {
+
+    let img
+    switch(forecastItem.weather[0].icon){
+        case '01d': img = require('../assets/icons/wi-day-sunny.jpg'); break;
+        case '01n': img = require('../assets/icons/wi-night-clear.jpg'); break;
+        case '02d': img = require('../assets/icons/wi-day-cloudy.jpg'); break;
+        case '02n': img = require('../assets/icons/wi-night-alt-cloudy.jpg'); break;
+        case '03d': img = require('../assets/icons/wi-cloud.jpg'); break;
+        case '03n': img = require('../assets/icons/wi-cloud.jpg'); break;
+        case '04d': img = require('../assets/icons/wi-cloudy.jpg'); break;
+        case '04n': img = require('../assets/icons/wi-cloudy.jpg'); break;
+        case '09d': img = require('../assets/icons/wi-day-showers.jpg'); break;
+        case '09n': img = require('../assets/icons/wi-night-alt-showers.jpg'); break;
+        case '10d': img = require('../assets/icons/wi-day-rain.jpg'); break;
+        case '10n': img = require('../assets/icons/wi-night-alt-rain.jpg'); break;
+        case '11d': img = require('../assets/icons/wi-day-thunderstorm.jpg'); break;
+        case '11n': img = require('../assets/icons/wi-night-alt-thunderstorm.jpg'); break;
+        case '13d': img = require('../assets/icons/wi-day-snow.jpg'); break;
+        case '13n': img = require('../assets/icons/wi-night-alt-snow.jpg'); break;
+        case '50d': img = require('../assets/icons/wi-day-fog.jpg'); break;
+        case '50n': img = require('../assets/icons/wi-night-fog.jpg'); break;
+    }
     
-    const img = {uri: "http://openweathermap.org/img/wn/"+forecastItem.weather[0].icon+"@2x.png"}
-   
-    //console.log(forecastItem)
+    
+    //const img = {uri: "http://openweathermap.org/img/wn/"+forecastItem.weather[0].icon+"@2x.png"}
+    //const loc = '../assets/weather_icon-0'+(Math.floor(Math.random() * 8)+1).toString()+'.png'.toString()
+    //const img = require(loc)
+    
+    //const img = require('../assets/icons/'+w_icon_map[forecastItem.weather[0].icon]+'.png')
+    //console.log(w_icon_map[forecastItem.weather[0].icon])
+    //const tname = w_icon_map[forecastItem.weather[0].icon]
+    //const img = require('../assets/icons/'+tname+'.png')
+    //const img = require('../assets/icons/wi-day-sunny.jpg')
+    //console.log(forecastItem.weather[0].description)
     return (
         
         <View  style={styles.futureForecastItemContainer}>
         
             <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('ddd hh:mm a')}</Text>
             <Image source={img} style={styles.image} />
-            <Text  style={styles.temp}>{forecastItem.weather[0].main}</Text> 
+            <Text  style={styles.temp}>{forecastItem.weather[0].description}</Text> 
             <Text  style={styles.temp}>Temp - {forecastItem.temp}&#176;C</Text>
             
         
@@ -54,7 +82,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10
     },
     image: {
-        backgroundColor: '#E5890A',
+        //backgroundColor: '#E5890A',
         width: 100,
         height: 100,
         borderRadius: 100
@@ -72,6 +100,10 @@ const styles = StyleSheet.create({
     },
 
     futureForecastItemContainer: {
+        backgroundColor: '#F3F4ED',
+        paddingBottom: 20,
+        paddingLeft: 10,
+        paddingLeft: 10,
         marginRight: 15,
         marginBottom: 10
     },
@@ -89,7 +121,7 @@ const styles = StyleSheet.create({
     },
     day: {
         
-        fontSize: 12,
+        fontSize: 14,
         color:"black",
         textAlign:"center",
         borderRadius: 50,
@@ -98,7 +130,7 @@ const styles = StyleSheet.create({
     },
     temp: {
         marginTop: 10,
-        fontSize: 12,
+        fontSize: 14,
         color:"black",
         fontWeight:"600",
         textAlign:"center"
