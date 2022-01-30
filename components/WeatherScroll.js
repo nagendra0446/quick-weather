@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, ScrollView, Image, Text, StyleSheet} from 'react-native'
+import {View, ScrollView, Image, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import moment from 'moment-timezone'
 import FutureForecast from './FutureForecast'
 
@@ -44,6 +44,7 @@ const CurrentTempEl = ({data}) => {
         //const img = require('../assets/icons/wi-day-sunny.png')
         
         return(
+            <TouchableOpacity style={styles.currentTempContainer} onPress={() => console.log('Clicked')}>
             <View style={styles.currentTempContainer}>
                 <Image source={img} style={styles.image} />
                 <View  style={styles.otherContainer}>
@@ -53,6 +54,7 @@ const CurrentTempEl = ({data}) => {
                     <Text  style={styles.temp}>Day - {data.temp.day}&#176;C</Text>
                 </View>
             </View>
+            </TouchableOpacity>
         )
     }else{
         return( 
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
 
     currentTempContainer: {
         flexDirection: 'row',
-        backgroundColor: '#F3F4ED',
+        //backgroundColor: '#F3F4ED',
         justifyContent:"center",
         alignItems:'center',
         borderRadius: 2,

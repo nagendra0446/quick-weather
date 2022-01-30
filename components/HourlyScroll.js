@@ -13,14 +13,15 @@ const HourlyScroll = ({weatherData}, dayNum) => {
 }
 
 const FutureForecast2 = ({data}) => {
-    console.log(data)
+    data = data.list
     
+    console.log(data)
     return (
         <View style={{flexDirection: 'row'}}>
             {
                 data && data.length > 0 ? 
                 data.map((val, idx) => (
-                    idx !== 0 &&  <FutureForecastItem2 style={styles.FutureForecastItem2} key={idx} forecastItem={val}/>
+                    <FutureForecastItem2 style={styles.FutureForecastItem2} key={idx} forecastItem={val}/>
                 )) : <Text></Text>
             }
         </View>
@@ -66,10 +67,11 @@ const FutureForecastItem2 = ({forecastItem}) => {
         
         <View  style={styles.futureForecastItemContainer}>
         
-            <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('ddd hh:mm a')}</Text>
+            <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('hh:mm a')}</Text>
+            <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('Do ddd')}</Text>
             <Image source={img} style={styles.image} />
             <Text  style={styles.temp}>{forecastItem.weather[0].description}</Text> 
-            <Text  style={styles.temp}>Temp - {forecastItem.temp}&#176;C</Text>
+            {/*<Text  style={styles.temp}>Temp - {forecastItem.main.temp}&#176;C</Text>*/}
             
         
         </View>
@@ -78,8 +80,7 @@ const FutureForecastItem2 = ({forecastItem}) => {
 
 const styles = StyleSheet.create({
     scrollView: {
-        flex:0.1,
-        paddingLeft: 10
+        flex:1,
     },
     image: {
         //backgroundColor: '#E5890A',
@@ -89,55 +90,35 @@ const styles = StyleSheet.create({
 
     },
 
-    FutureForecast2: {
-        padding: 20,
-        borderWidth: 2
-    },
-    
-    FutureForecastItem2: {
-        margin: 20,
-        borderWidth: 2
-    },
-
     futureForecastItemContainer: {
-        backgroundColor: '#F3F4ED',
-        paddingBottom: 20,
-        paddingLeft: 10,
-        paddingLeft: 10,
-        marginRight: 15,
-        marginBottom: 10
+        flex:1,
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'white',
+        borderRadius: 100,
+        marginLeft: 10
     },
 
-    currentTempContainer: {
-        flexDirection: 'row',
-        backgroundColor: '#F3F4ED',
-        justifyContent:"center",
-        alignItems:'center',
-        borderRadius: 2,
-        height: 150,
-        margin: 10,
-        borderWidth: 2
-        
-    },
     day: {
-        
-        fontSize: 14,
-        color:"black",
-        textAlign:"center",
-        borderRadius: 50,
-        fontWeight: "600",
-        margin: 10
+        padding: 0,
+        fontSize: 12,
+        //fontWeight: "600",
+        textAlign: "center"
     },
     temp: {
         marginTop: 10,
         fontSize: 14,
         color:"black",
-        fontWeight:"600",
+        fontWeight:"400",
         textAlign:"center"
     },
     otherContainer: {
         
     }
 })
+
+
 
 export default HourlyScroll
