@@ -1,19 +1,18 @@
 import React from 'react'
-import {View, ScrollView, Image, Text, StyleSheet} from 'react-native'
+import {View, ScrollView, Image, Text, StyleSheet, Sup} from 'react-native'
 import moment from 'moment-timezone'
-const HourlyScroll = ({weatherData}, dayNum) => {
+const HourlyScroll = ({weatherData}) => {
     
     //console.log(typeof(weatherData))
     //weatherData.forEach(element => console.log(element));
     return (
-        <ScrollView horizontal={true} style={styles.scrollView}>
+        <ScrollView horizontal={true} style={styles.scrollView} >
             <FutureForecast2 style={styles.FutureForecast2} data={weatherData}/>
         </ScrollView>
     )
 }
 
 const FutureForecast2 = ({data}) => {
-    data = data.list
     
     console.log(data)
     return (
@@ -63,17 +62,41 @@ const FutureForecastItem2 = ({forecastItem}) => {
     //const img = require('../assets/icons/'+tname+'.png')
     //const img = require('../assets/icons/wi-day-sunny.jpg')
     //console.log(forecastItem.weather[0].description)
-    return (
-        
-        <View  style={styles.futureForecastItemContainer}>
-        
-            <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('hh:mm a')}</Text>
-            <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('Do ddd')}</Text>
-            <Image source={img} style={styles.image} />
-            <Text  style={styles.temp}>{forecastItem.weather[0].description}</Text> 
-            {/*<Text  style={styles.temp}>Temp - {forecastItem.main.temp}&#176;C</Text>*/}
+
+    let val = moment(forecastItem.dt * 1000).format('Do');
+    let day_num = parseInt(moment(forecastItem.dt * 1000).format('D'));
+    let desc = forecastItem.weather[0].description
+    desc =  desc.substring(0,1).toUpperCase() + desc.substring(1)
+    
+    return ( 
+        <View>
+            {day_num % 2 == 0 ? <View  style={styles.futureForecastItemContainer1}>
+             
+                <Text  style={styles.day}>{val}</Text>
             
-        
+
+                <Text  style={styles.time}>{moment(forecastItem.dt * 1000).format('hh:mm a')}</Text>
+                
+                <Image source={img} style={styles.image} />
+                <Text  style={styles.temp}>{desc}</Text> 
+                {/*<Text  style={styles.temp}>Temp - {forecastItem.main.temp}&#176;C</Text>*/}
+                
+            </View>:
+            <View  style={styles.futureForecastItemContainer2}>
+             
+             <Text  style={styles.day}>{val}</Text>
+         
+
+             <Text  style={styles.time}>{moment(forecastItem.dt * 1000).format('hh:mm a')}</Text>
+             
+             <Image source={img} style={styles.image} />
+             <Text  style={styles.temp}>{desc}</Text> 
+             {/*<Text  style={styles.temp}>Temp - {forecastItem.main.temp}&#176;C</Text>*/}
+             
+         </View>
+            
+            
+            }
         </View>
     )
 }
@@ -81,39 +104,56 @@ const FutureForecastItem2 = ({forecastItem}) => {
 const styles = StyleSheet.create({
     scrollView: {
         flex:1,
+        marginTop: 10
     },
     image: {
         //backgroundColor: '#E5890A',
-        width: 100,
-        height: 100,
-        borderRadius: 100
-
+        width: 80,
+        height: 80,
+        alignSelf: 'center',
+        borderRadius: 100,
+        marginBottom:5
     },
 
-    futureForecastItemContainer: {
-        flex:1,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 10,
-        paddingBottom: 10,
-        backgroundColor: 'white',
-        borderRadius: 100,
-        marginLeft: 10
+    futureForecastItemContainer1: {
+        padding: 5,
+        backgroundColor: '#B1D0E0',
+        borderRadius: 10,
+        marginLeft: 10,
+        height: 185,
+        width: 130
+    },
+
+    futureForecastItemContainer2: {
+        
+        backgroundColor: '#6998AB',
+        borderRadius: 10,
+        marginLeft: 10,
+        height: 185,
+        width: 130
     },
 
     day: {
         padding: 0,
-        fontSize: 12,
-        //fontWeight: "600",
-        textAlign: "center"
+        fontSize: 15,
+        fontWeight: "700",
+        textAlign: "center",
+        marginBottom:5
+    },
+    time: {
+        padding: 0,
+        fontSize: 15,
+        fontWeight: "700",
+        textAlign: "center",
+        marginBottom:5
     },
     temp: {
-        marginTop: 10,
-        fontSize: 14,
+        fontSize: 16,
         color:"black",
-        fontWeight:"400",
-        textAlign:"center"
+        fontWeight:"700",
+        textAlign:"center",
     },
+
     otherContainer: {
         
     }

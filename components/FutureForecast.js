@@ -12,7 +12,7 @@ const FutureForecast = ({data}) => {
             {
                 data && data.length > 0 ?
                 data.map((data, idx) => (
-                    idx !== 0 && <TouchableOpacity key={idx} onPress={printVal}><FutureForecastItem forecastItem={data}/></TouchableOpacity> 
+                    idx !== 0 && <FutureForecastItem key={idx} forecastItem={data}/> 
                 ))
                 :
                 <View/>
@@ -23,6 +23,9 @@ const FutureForecast = ({data}) => {
 
 
 const FutureForecastItem = ({forecastItem}) => {
+    let desc = forecastItem.weather[0].description
+    desc =  desc.substring(0,1).toUpperCase() + desc.substring(1)
+    let day_num = parseInt(moment(forecastItem.dt * 1000).format('D'));
     let img
     switch(forecastItem.weather[0].icon){
         case '01d': img = require('../assets/icons/wi-day-sunny.jpg'); break;
@@ -50,13 +53,35 @@ const FutureForecastItem = ({forecastItem}) => {
     //const img = require('../assets/icons/wi-day-sunny.png')
     //console.log(forecastItem)
     return (
-        <View  style={styles.futureForecastItemContainer}>
-            <Text style={styles.date}>{moment(forecastItem.dt * 1000).format('Do MMM')}</Text>
-            <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('dddd')}</Text>
+        <View style={{padding:0}}>
+        { day_num % 2 == 0 ?
+        <View style={styles.currentTempContainer1}>
+        <Image source={img} style={styles.image} />
+        <View  style={styles.otherContainer}>
+        <Text style={styles.date}>{moment(forecastItem.dt * 1000).format('Do MMM')}</Text>
+        <Text  style={styles.desc}>{desc}</Text>
+        
+        <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('dddd')}</Text>   
+        <Text  style={styles.temp}>Day {forecastItem.temp.day}&#176;C</Text>
+            <Text  style={styles.temp}>Night {forecastItem.temp.night}&#176;C</Text>
+            
+        </View>
+        </View> :
+
+            <View style={styles.currentTempContainer2}>
             <Image source={img} style={styles.image} />
-            <Text  style={styles.desc}>{forecastItem.weather[0].description}</Text> 
-            <Text  style={styles.temp_n}>Night - {forecastItem.temp.night}&#176;C</Text>
-            <Text  style={styles.temp_d}>Day - {forecastItem.temp.day}&#176;C</Text>
+            <View  style={styles.otherContainer}>
+            <Text style={styles.date}>{moment(forecastItem.dt * 1000).format('Do MMM')}</Text>
+            <Text  style={styles.desc}>{desc}</Text>
+
+            <Text  style={styles.day}>{moment(forecastItem.dt * 1000).format('dddd')}</Text>   
+            <Text  style={styles.temp}>Day {forecastItem.temp.day}&#176;C</Text>
+                <Text  style={styles.temp}>Night {forecastItem.temp.night}&#176;C</Text>
+                
+            </View>
+            </View>
+        
+        }
         </View>
     )
 }
@@ -65,49 +90,86 @@ export default FutureForecast
 
 
 const styles = StyleSheet.create({
+
+    currentTempContainer1: {
+        marginTop: 15,
+        marginBottom:15,
+        flexDirection: 'row',
+        backgroundColor: '#B1D0E0',
+        justifyContent:"center",
+        alignItems:'center',
+        borderRadius: 10,
+        padding: 10,
+        marginLeft: 10,
+        width: 300,
+        height: 185
+    },
+
+    currentTempContainer2: {
+        marginTop: 15,
+        marginBottom:15,
+        flexDirection: 'row',
+        backgroundColor: '#6998AB',
+        justifyContent:"center",
+        alignItems:'center',
+        borderRadius: 10,
+        padding: 10,
+        marginLeft: 10,
+        width: 300,
+        height: 185
+    },
+
+
+
+
     image: {
         width: 100,
         height:100,
+        alignSelf: 'center',
         borderRadius: 100
     },
     futureForecastItemContainer: {
+        marginTop: 15,
+        marginBottom: 15,
         flex:1,
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingTop: 10,
-        paddingBottom: 10,
+        padding: 10,
         backgroundColor: 'white',
-        borderRadius: 100,
+        borderRadius: 10,
         marginLeft: 10
     },
 
-    day: {
-        padding: 0,
-        fontSize: 12,
-        //fontWeight: "600",
-        textAlign: "center"
-    },
     date: {
-        fontSize: 12,
-        textAlign: "center",
-        fontWeight:"500"
-
+        marginLeft: 8,
+        fontSize: 20,
+        color:"black",
+        padding: 5,
+        textAlign:"center",
+        borderRadius: 50,
+        fontWeight: "700"
+        
+    },
+    day: {
+        marginLeft: 8,
+        fontSize: 16,
+        color:"black",
+        padding: 5,
+        textAlign:"center",
+        borderRadius: 50,
+        fontWeight: "700"
+    },
+    temp: {
+        marginLeft: 8,
+        fontSize: 16,
+        color:"black",
+        fontWeight:"700",
+        textAlign:"center"
     },
     desc: {
-        fontSize: 12,
-        fontWeight:"500",
-        textAlign: "center",
-    },
-    temp_n: {
-        fontSize: 12,
+        marginLeft: 8,
+        fontStyle: 'italic',
+        fontSize: 20,
         color:"black",
-        fontWeight:"500",
-        textAlign: "center"
+        fontWeight:"700",
+        textAlign:"center"
     },
-    temp_d: {
-        fontSize: 12,
-        color:"black",
-        fontWeight:"500",
-        textAlign: "center"
-    }
 })

@@ -16,7 +16,7 @@ const WeatherItem = ({title, value, unit}) => {
     )
 }
 
-const DateTime = ({current, lat, lon, timezone, addr}) => {
+const DateTime = ({current, lat, lon, timezone, addr, newAddr}) => {
     
 
     const [date, setDate] = useState('')
@@ -45,23 +45,19 @@ const DateTime = ({current, lat, lon, timezone, addr}) => {
     return (
         <View style={styles.container}>  
            <View>
-               <View>
+               <View style={styles.total} >
                    <Text style={styles.heading}>{time}</Text>
-               </View>
-               <View>
                    <Text style={styles.subheading}>{date}</Text>
                </View>
                <View style={styles.weatherItemContainer}>
                     <WeatherItem title="Humidity" value={current? current.humidity : ""} unit="%"/>
-                    <WeatherItem title="Pressure" value={current? current.pressure : ""} unit="hPA"/>
-                    <WeatherItem title="Sunrise" value={current? moment.tz(current.sunrise * 1000, timezone ).format('HH:mm'): ""} unit="am"/>
-                    <WeatherItem title="Sunset" value={current? moment.tz(current.sunset * 1000, timezone ).format('HH:mm') : ""} unit="pm"/>
+                    <WeatherItem title="Pressure  " value={current? current.pressure : ""} unit=" hPA"/>
                </View>
            </View>
            <View style={styles.rightAlign}>
                {/*<Text style={styles.timezone}>{timezone}</Text>*/}
-               <Text style={styles.latlong}>{lat}N {lon}E</Text>
-               <Text style={styles.latlong}>{addr}</Text>
+               <Text style={styles.latlong1}>{lat}N {lon}E</Text>
+               {newAddr ? <Text style={styles.latlong2}>{newAddr}</Text> : <Text style={styles.latlong2}>{addr}</Text>}
            </View>
         </View>
     )
@@ -70,45 +66,63 @@ const DateTime = ({current, lat, lon, timezone, addr}) => {
 const styles = StyleSheet.create({
     container: {
         margin: 10,
-        marginTop: 40,
+        marginTop: 0,
         flexDirection:"row",
         justifyContent:'space-between',
         paddingTop: 10
     },
+    total:{
+        backgroundColor: "#18181b30",
+        borderRadius: 10,
+        padding: 5,
+    },
     heading: {
-        
-        fontSize: 35,
-        color:'white',
-        fontWeight: '300'
-    },
-    subheading: {
-        fontSize: 20,
-        
-        color: 'white',
-        fontWeight: '300'
-    },
-    rightAlign: {
-        textAlign:'right',
-        marginTop: 20
-    },
-    timezone: {
-        
-        fontSize: 20,
-        color:'white'
-    },
-    latlong:{
-        
-        fontSize:12,
+        fontSize: 25,
         color:'white',
         fontWeight: '700'
     },
+    subheading: {
+        fontSize: 15,
+        
+        color: 'white',
+        fontWeight: '700'
+    },
+    rightAlign: {
+        textAlign:'right'
+    },
+    timezone: {
+        fontWeight: '700',
+        fontSize: 20,
+        color:'white'
+    },
+    latlong1:{
+        backgroundColor: "#18181b30",
+        //borderRadius: 10,
+        padding: 5,
+        fontSize:15,
+        color:'white',
+        fontWeight: '700',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10
+    },
+    latlong2:{
+        backgroundColor: "#18181b30",
+        //borderRadius: 10,
+        padding: 5,
+        fontSize:15,
+        color:'white',
+        fontWeight: '700',
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10
+    },
     weatherItemContainer: {
-        //backgroundColor: "#18181b99",
+        backgroundColor: "#18181b30",
         borderRadius: 10,
         padding: 10,
         marginTop: 10,
-        borderWidth: 1,
-        borderColor: 'white'
+        //borderWidth: 1,
+        //borderColor: 'white',
+        fontWeight: '700'
     }, 
     weatherItem: {
         flexDirection: 'row',
@@ -118,7 +132,7 @@ const styles = StyleSheet.create({
         
         color:'white',
         fontSize: 14,
-        fontWeight: '200'
+        fontWeight: '700'
     }
 })
 
