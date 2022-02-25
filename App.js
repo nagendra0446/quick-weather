@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, ImageBackground,StatusBar  } from 'react-native';
-import SearchBar from './components/SearchBar';
 import * as Location from 'expo-location';
+
+import SearchBar from './components/SearchBar';
 import HourlyScroll from './components/HourlyScroll';
 import DateTime from './components/DateTime'
 import WeatherScroll from './components/WeatherScroll'
 
 const API_KEY = "46a9246bebba16d42b36aac3fc3ba8af";
-
-const bg_img = require('./assets/backgroundImages/img/bg_img4.jpg')
-
-
+const bg_img = require('./assets/background_imgs/bg_img4.jpg')
 
 export default function App() {
 
     const [loaded, setLoaded] = useState(true);
-    const [hdata, setHdata] = useState(null);
+    const [hdata, setHdata] = useState({});
     const [addr, setAddr] = useState({});
     const [newAddr, setNewAddr] = useState(null);
     const [data, setData] = useState({});
-    const [bg, setBg] = useState(null);
 
     useEffect(() => {(
 		async () => {
@@ -30,41 +27,49 @@ export default function App() {
 			console.log(location.coords.latitude, location.coords.longitude);
 			fetchAddr(location.coords.latitude, location.coords.longitude);
             console.log(addr)
-            //fetchWeatherData('Mumbai');
 		})();
 	}, [])
 
-    const fetchDataFromApi = (latitude, longitude) => {
+    async function fetchDataFromApi(latitude, longitude) {
+        setLoaded(false);
 		if(latitude && longitude) {
-			fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&units=metric&appid=${API_KEY}`)
-			.then(res => res.json())
-			.then(data => {
-				console.log(data.daily)
-				console.log(data.hourly[1])
-				setData(data)
-			})
+            const API = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&units=metric&appid=${API_KEY}`
+			try{
+                const response = await fetch(API);
+                if(response.status == 200) {
+                    const json = await response.json()
+                    setData(json)
+                }
+            } catch(error){
+                console.log(error);
+            }
 
-			fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
-			.then(res => res.json())
-			.then(hdata => {
-				console.log(`https://api.openweathermap.org/data/2.5/forecast/hourly?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
-				//console.log(data.daily)
-				//console.log(data.hourly[1])
-				setHdata(hdata)
-			})
+			const API2 = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
+			try{
+                const response = await fetch(API2);
+                if(response.status == 200) {
+                    const json = await response.json()
+                    setHdata(json)
+                    
+                }
+            } catch(error){
+                console.log(error);
+            }
 		}
 	}
 
-	const fetchAddr = (lat, long) => {
-        let res;
-		fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${long}&limit=1&appid=06e410354074255cadd2ff3bcb4e2dda`, {
-		"method": "GET"})
-		.then((response) => response.json()).then((json) => {
-			console.log(json[0].name)
-            setAddr(json[0])
-		}).catch((error) => {
-			console.error(error);
-		});
+	async function fetchAddr(lat, long) {
+        const API = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${long}&limit=1&appid=06e410354074255cadd2ff3bcb4e2dda`
+		try{
+            const response = await fetch(API);
+            if(response.status == 200) {
+                const json = await response.json()
+                setAddr(json[0])
+                setLoaded(true);
+            }
+        } catch(error){
+            console.log(error);
+        }
 	}
 
     async function fetchWeatherData(cityName) {
@@ -81,8 +86,6 @@ export default function App() {
                 } else {
                     setHdata(null);
                 }
-                setLoaded(true);
-                
             } catch (error) {
                 console.log(error);
             }
@@ -109,6 +112,7 @@ export default function App() {
                 console.log(error);
             }
         }
+        setLoaded(true)
     }
 
     
@@ -116,8 +120,8 @@ export default function App() {
 
     if(!loaded) {
         return (
-            <View style={styles.container}>
-                <ActivityIndicator color='gray'  size={36} />
+            <View style={styles.container2}>
+                <ActivityIndicator color='gray'  size={45} />
             </View>
 
         )
@@ -132,23 +136,25 @@ export default function App() {
         )
     }
 
-    return (
-        
-        
-        <View style={styles.container}>
+    else {
+        return (
             
-            <ImageBackground source={bg_img} style={styles.image} >
-            <Text style={styles.title}>QuickWeather</Text>
-             <SearchBar style={styles.searchBar} fetchWeatherData={fetchWeatherData}/>
-             <DateTime current={data.current} timezone={data.timezone} lat={data.lat} lon={data.lon} addr={addr.name} newAddr={newAddr} />
-             <WeatherScroll weatherData={data.daily} />
-            <HourlyScroll weatherData={hdata.list}/>
             
-            <StatusBar style="auto" />
-            </ImageBackground>
-        </View>
-        
-    );
+            <View style={styles.container}>
+                
+                <ImageBackground source={bg_img} style={styles.image} >
+                <Text style={styles.title}>QuickWeather</Text>
+                <SearchBar style={styles.searchBar} fetchWeatherData={fetchWeatherData}/>
+                <DateTime current={data.current} timezone={data.timezone} lat={data.lat} lon={data.lon} addr={addr.name} newAddr={newAddr} />
+                <WeatherScroll weatherData={data.daily} />
+                <HourlyScroll weatherData={hdata.list}/>
+                
+                <StatusBar style="auto" />
+                </ImageBackground>
+            </View>
+            
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -167,7 +173,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
 	},
     container: {
+        backgroundColor: '#fff',
 		flex: 1,
+	},
+    container2: {
+        backgroundColor: '#fff',
+		flex: 1,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
 	},
 	scrollView: {
 		flex: 1,
@@ -181,7 +195,11 @@ const styles = StyleSheet.create({
 		justifyContent:"center"
 	},
   primaryText: {
-      margin: 20,
-      fontSize: 28
+      
+      //margin: 20,
+      fontSize: 28,
+      alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
   }
 });

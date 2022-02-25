@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {View, Text, StyleSheet} from 'react-native';
 
-import moment from 'moment-timezone'
-
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -21,7 +19,9 @@ const DateTime = ({current, lat, lon, timezone, addr, newAddr}) => {
 
     const [date, setDate] = useState('')
     const [time, setTime] = useState('')
-
+    if(newAddr)
+        newAddr = newAddr.replace(/^(.)|\s+(.)/g, c => c.toUpperCase());
+        
     useEffect (() => {
         setInterval(() => {
             const time = new Date();
