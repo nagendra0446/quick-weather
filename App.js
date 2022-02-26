@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, ImageBackground,StatusBar  } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, Dimensions, ImageBackground,StatusBar  } from 'react-native';
 import * as Location from 'expo-location';
 
 import SearchBar from './components/SearchBar';
@@ -120,18 +120,26 @@ export default function App() {
 
     if(!loaded) {
         return (
+            
             <View style={styles.container2}>
-                <ActivityIndicator color='gray'  size={45} />
+                <ImageBackground source={bg_img} style={styles.image2} >
+                <ActivityIndicator color='white'  size={45} />
+                </ImageBackground>
             </View>
+            
 
         )
     }
 
     else if(hdata === null) {
         return (
-            <View style={styles.container}>
-                <SearchBar fetchWeatherData={fetchWeatherData}/>
-                <Text style={styles.primaryText}>City Not Found! Try Different City</Text>
+            <View style={styles.container2}>
+                <ImageBackground source={bg_img} style={styles.image3} >
+                <Text style={styles.title}>QuickWeather</Text>
+                <SearchBar style={styles.searchBar} fetchWeatherData={fetchWeatherData}/>
+                <Text style={styles.primaryText}>City not found!😟 </Text>
+                <Text style={styles.primaryText2}>Try a different city</Text>
+                </ImageBackground>
             </View>
         )
     }
@@ -169,19 +177,19 @@ const styles = StyleSheet.create({
     searchBar: {
         margin: 0,
         padding: 0,
-        alignItems: 'center',
-        justifyContent: 'center'
 	},
     container: {
         backgroundColor: '#fff',
 		flex: 1,
 	},
-    container2: {
-        backgroundColor: '#fff',
+    container3: {
 		flex: 1,
-        alignSelf: 'center',
         alignItems: 'center',
-        justifyContent: 'center'
+		justifyContent: 'center',
+	},
+    container2: {
+		flex: 1,
+        
 	},
 	scrollView: {
 		flex: 1,
@@ -194,12 +202,35 @@ const styles = StyleSheet.create({
 		resizeMode:"cover", 
 		justifyContent:"center"
 	},
-  primaryText: {
-      
-      //margin: 20,
-      fontSize: 28,
-      alignSelf: 'center',
-        alignItems: 'center',
+    image2: { 
+        flex:1,
+        resizeMode:"cover",
         justifyContent: 'center'
-  }
+	},
+    image3: { 
+        flex:1,
+        resizeMode:"cover",
+	},
+  primaryText: {
+    color: 'white',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: Dimensions.get('screen').height * 0.3,
+      fontSize: 24,
+      alignSelf: 'center',
+      fontWeight: '600',
+
+  },
+  primaryText2: {
+    color: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    //margin: 20,
+    fontSize: 24,
+    alignSelf: 'center',
+    fontWeight: '600',
+    fontStyle: 'italic'
+}
 });
