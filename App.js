@@ -22,7 +22,7 @@ export default function App() {
 		async () => {
 			let { status } = await Location.requestForegroundPermissionsAsync();
 			let location = await Location.getCurrentPositionAsync({});
-            console.log(status)
+
 			fetchDataFromApi(location.coords.latitude, location.coords.longitude);
 			console.log(location.coords.latitude, location.coords.longitude);
 			fetchAddr(location.coords.latitude, location.coords.longitude);

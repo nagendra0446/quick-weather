@@ -8,7 +8,7 @@ const WeatherScroll = ({weatherData}) => {
 
 
     return (
-        <ScrollView horizontal={true} style={styles.scrollView}>
+        <ScrollView horizontal={true} style={styles.scrollView} showsHorizontalScrollIndicator={false}>
             <CurrentTempEl data={weatherData && weatherData.length > 0 ? weatherData[0] : {}}/>
             <FutureForecast data={weatherData}/>
         </ScrollView>

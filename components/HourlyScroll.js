@@ -6,7 +6,7 @@ const HourlyScroll = ({weatherData}) => {
     //console.log(typeof(weatherData))
     //weatherData.forEach(element => console.log(element));
     return (
-        <ScrollView horizontal={true} style={styles.scrollView} >
+        <ScrollView horizontal={true} style={styles.scrollView} showsHorizontalScrollIndicator={false} >
             <FutureForecast2 style={styles.FutureForecast2} data={weatherData}/>
         </ScrollView>
     )
@@ -63,7 +63,7 @@ const FutureForecastItem2 = ({forecastItem}) => {
     //const img = require('../assets/icons/wi-day-sunny.jpg')
     //console.log(forecastItem.weather[0].description)
 
-    let val = moment(forecastItem.dt * 1000).format('Do');
+    let val = moment(forecastItem.dt * 1000).format('Do MMM');
     let day_num = parseInt(moment(forecastItem.dt * 1000).format('D'));
     let desc = forecastItem.weather[0].description
     desc =  desc.substring(0,1).toUpperCase() + desc.substring(1)
