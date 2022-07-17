@@ -55,8 +55,8 @@ const DateTime = ({current, lat, lon, timezone, addr, newAddr}) => {
                </View>
            </View>
            <View style={styles.rightAlign}>
-               <Text style={styles.latlong1}>{timezone}</Text>
-               {/*<Text style={styles.latlong1}>{lat}N {lon}E</Text>*/}
+               {/*<Text style={styles.latlong1}>{timezone}</Text>*/}
+               <Text style={styles.latlong1}>{lat}N {lon}E</Text>
                {newAddr ? <Text style={styles.latlong2}>{newAddr}</Text> : <Text style={styles.latlong2}>{addr}</Text>}
            </View>
         </View>
